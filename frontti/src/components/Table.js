@@ -10,6 +10,7 @@ const Table = ({ filtershown, data, setData, setMessage }) => {
           PhoneBook.getAll().then((data) => {
             console.log(data);
             setData(data);
+            console.log(data);
           });
         })
         .catch((error) => {
@@ -21,29 +22,62 @@ const Table = ({ filtershown, data, setData, setMessage }) => {
       setMessage(`Deleting ${name} was succesful!`);
     }
   };
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Nimet</th>
-          <th>Numerot</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {filtershown !== ""
-          ? data
-              .filter((info) => info.name.includes(filtershown))
-              .map((filteredName) => (
-                <tr key={filteredName.id}>
-                  <td>{filteredName.name}</td>
-                  <td>{filteredName.number}</td>
+  if (data === "") {
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Nimet</th>
+            <th>Numerot</th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+    );
+  } else {
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Nimet</th>
+            <th>Numerot</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {filtershown !== ""
+            ? data
+                .filter((info) => info.name.includes(filtershown))
+                .map((filteredName) => (
+                  <tr key={filteredName.id}>
+                    <td>{filteredName.name}</td>
+                    <td>{filteredName.number}</td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          handleDestroy(
+                            filteredName.id,
+                            filteredName.name,
+                            data,
+                            setData
+                          )
+                        }
+                      >
+                        Poista
+                      </button>
+                    </td>
+                  </tr>
+                ))
+            : data.map((phonebook) => (
+                <tr key={phonebook.id}>
+                  <td>{phonebook.name}</td>
+                  <td>{phonebook.number}</td>
                   <td>
                     <button
                       onClick={() =>
                         handleDestroy(
-                          filteredName.id,
-                          filteredName.name,
+                          phonebook.id,
+                          phonebook.name,
                           data,
                           setData
                         )
@@ -53,25 +87,11 @@ const Table = ({ filtershown, data, setData, setMessage }) => {
                     </button>
                   </td>
                 </tr>
-              ))
-          : data.map((phonebook) => (
-              <tr key={phonebook.id}>
-                <td>{phonebook.name}</td>
-                <td>{phonebook.number}</td>
-                <td>
-                  <button
-                    onClick={() =>
-                      handleDestroy(phonebook.id, phonebook.name, data, setData)
-                    }
-                  >
-                    Poista
-                  </button>
-                </td>
-              </tr>
-            ))}
-      </tbody>
-    </table>
-  );
+              ))}
+        </tbody>
+      </table>
+    );
+  }
 };
 
 export default Table;
