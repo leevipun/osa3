@@ -1,25 +1,28 @@
-import axios from "axios";
 import PhoneBook from "../services/PhoneBook";
 
 const Table = ({ filtershown, data, setData, setMessage }) => {
   const handleDestroy = (id, name) => {
     if (window.confirm(`Delete ${name} ${id}`)) {
-      axios
-        .delete(`http://localhost:3001/persons/${id}`)
+      console.log("Poistetaan");
+      PhoneBook.deleting(id)
         .then((response) => {
-          PhoneBook.getAll().then((data) => {
-            console.log(data);
-            setData(data);
-            console.log(data);
-          });
+          console.log("Päästäänkö tänne?");
+          setMessage(`Deleting ${name} was successful!`);
+          PhoneBook.getAll()
+            .then((responseData) => {
+              console.log(responseData);
+              setData(responseData);
+            })
+            .catch((error) => {
+              console.error("Error fetching updated data:", error);
+            });
         })
         .catch((error) => {
-          error(`deleting ${name} was not succesfull!`);
+          setMessage(`Deleting ${name} was not successful!`);
           setTimeout(() => {
-            error(null);
+            setMessage(null);
           }, 5000);
         });
-      setMessage(`Deleting ${name} was succesful!`);
     }
   };
   if (data === "") {
@@ -34,7 +37,7 @@ const Table = ({ filtershown, data, setData, setMessage }) => {
         </thead>
       </table>
     );
-  } else {
+  } else if (data !== "") {
     return (
       <table>
         <thead>

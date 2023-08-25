@@ -20,13 +20,13 @@ const App = () => {
     PhoneBook.getAll()
       .then((response) => {
         console.log("Täytetty");
-        setData(response.data);
+        setData(response);
         console.log("Data:", data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [data]);
+  }, []);
 
   return (
     <div>

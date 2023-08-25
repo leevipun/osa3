@@ -57,7 +57,7 @@ const getAllPersons = () => {
 
 app.get("/api/persons", (req, res) => {
   const allPersons = getAllPersons();
-  return res.json(persons);
+  return res.json(allPersons);
 });
 
 app.post("/api/persons", (req, res) => {
