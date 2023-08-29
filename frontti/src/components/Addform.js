@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import PhoneBook from "../services/PhoneBook";
 
 const Addform = ({
@@ -9,11 +8,9 @@ const Addform = ({
   setNewName,
   setNewNumber,
   setMessage,
-  message,
   setError,
-  error,
 }) => {
-  const handleadd = () => {
+  const handleAdd = () => {
     if (newName === "" || newNumber === "") {
       setError("Please provide both name and number.");
       setTimeout(() => {
@@ -28,14 +25,10 @@ const Addform = ({
     if (existingName) {
       if (
         window.confirm(
-          `${newName} is already added to the phonebook do you want to replace the old one with a ${newNumber}?`
+          `${newName} is already added to the phonebook. Do you want to replace the old number with ${newNumber}?`
         )
       ) {
-        console.log("hyväksyttiin");
-        const id = data
-          .filter((item) => item.name === newName)
-          .map((item) => item.id);
-        console.log(id);
+        const id = existingName.id;
         const updateInfo = { name: newName, number: newNumber };
         PhoneBook.update(id, updateInfo)
           .then((response) => {
@@ -44,7 +37,7 @@ const Addform = ({
             });
           })
           .catch((error) => {
-            setError(`updating was not succesfull!`);
+            setError(`Updating was not successful!`);
             setTimeout(() => {
               setError(null);
             }, 5000);
@@ -60,26 +53,20 @@ const Addform = ({
       alert(`${newNumber} is already added to the phonebook.`);
       return;
     } else {
-      const newid = uuidv4();
-      setMessage(`adding ${newName} was succesful`);
-      console.log(message);
-      const newData = [
-        ...data,
-        { name: newName, id: newid, number: newNumber },
-      ];
-      setData(newData);
-      setNewName("");
-      setNewNumber("");
-      console.log("toimii?");
-
-      PhoneBook.create({ name: newName, id: newid, number: newNumber }).catch(
-        (error) => {
-          setError(`adding ${newName} was not succesfull`);
+      setMessage(`Adding ${newName} was successful`);
+      const newPerson = { name: newName, number: newNumber };
+      PhoneBook.create(newPerson)
+        .then((response) => {
+          setData(data.concat(response)); // Assuming the response contains the newly added person with id
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          setError(`Adding ${newName} was not successful`);
           setTimeout(() => {
             setError(null);
           }, 5000);
-        }
-      );
+        });
     }
   };
 
@@ -97,7 +84,7 @@ const Addform = ({
           onChange={(e) => setNewNumber(e.target.value)}
         />
       </div>
-      <button onClick={handleadd}>Add</button>
+      <button onClick={handleAdd}>Add</button>
     </div>
   );
 };
