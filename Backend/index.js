@@ -4,9 +4,9 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config()
 
-const Note = require('./models/note')
+const Note = require('./models/note');
 
-
+7.
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -109,10 +109,13 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
-  res.send(`PhoneBook has contacts of ${}`)
-})
-
+app.get('/info', (req, res, next) => {
+  Note.countDocuments({})
+    .then(count => {
+      res.send(`PhoneBook has contacts of ${count} people. Time is ${getTime()}`);
+    })
+    .catch(error => next(error));
+});
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
