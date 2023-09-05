@@ -30,7 +30,7 @@ const Table = ({ filtershown, data, setData, setMessage }) => {
       </thead>
       <tbody>
         {filtershown
-          ? data
+          ? data 
               .filter((info) => info.name.includes(filtershown))
               .map((filteredName) => (
                 <tr key={filteredName.id}>

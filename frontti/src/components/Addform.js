@@ -53,16 +53,16 @@ const Addform = ({
       alert(`${newNumber} is already added to the phonebook.`);
       return;
     } else {
-      setMessage(`Adding ${newName} was successful`);
       const newPerson = { name: newName, number: newNumber };
       PhoneBook.create(newPerson)
         .then((response) => {
-          setData(data.concat(response)); // Assuming the response contains the newly added person with id
+          setData(data.concat(response));
+          setMessage(`Adding ${newName} was successful`);
           setNewName("");
           setNewNumber("");
         })
         .catch((error) => {
-          setError(`Adding ${newName} was not successful`);
+          setError(`Adding ${newName} was not successful, ${error.response.data}`);
           setTimeout(() => {
             setError(null);
           }, 5000);
