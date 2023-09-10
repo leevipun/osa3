@@ -63,6 +63,8 @@ const Addform = ({
         })
         .catch((error) => {
           setError(`Adding ${newName} was not successful, ${error.response.data}`);
+          setNewName('')
+          setNewNumber('')
           setTimeout(() => {
             setError(null);
           }, 5000);
