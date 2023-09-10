@@ -1,10 +1,10 @@
 const morgan = require("morgan");
-const express = require('express')
+const express = require("express")
 const app = express()
-const cors = require('cors')
-require('dotenv').config()
+const cors = require("cors")
+require("dotenv").config()
 
-const Note = require('./models/note');
+const Note = require("./models/note");
 
 7.
 
